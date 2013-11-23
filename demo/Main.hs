@@ -1,4 +1,7 @@
 import Math.Fib
 
 
-main = putStrLn "typechecks."
+main :: IO ()
+main = do
+  s <- getContents
+  putStr s
