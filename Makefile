@@ -31,7 +31,9 @@ proofs/%.proof: proofs/%/cabal.out tests/%/cabal.expected
 
 proofs/%/cabal.out: tests/%/cabal.in build
 	mkdir -p $(dir $@)
-	./dist/build/$(NAME)/$(NAME) < $< > $@
+	cd $(dir $<); cat cabal.in > $(shell basename $(shell dirname $<)).cabal
+	cd $(dir $<); ../../dist/build/$(NAME)/$(NAME) $(shell basename $(shell dirname $<)).cabal
+	cat $(dir $<)/$(shell basename $(shell dirname $<)).cabal > $@
 
 
 clean:
