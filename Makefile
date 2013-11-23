@@ -15,13 +15,13 @@ build: config
 	@cabal-dev build &> /dev/null
 
 doc: build
-	find src demo -name '*.hs' | xargs haddock --optghc='-package-db '"$$(ls -d cabal-dev/packages-*.conf)" --no-warnings --odir=doc --html
+	find src -name '*.hs' | xargs haddock --optghc='-package-db '"$$(ls -d cabal-dev/packages-*.conf)" --no-warnings --odir=doc --html
 
 
 test: small-tests big-tests
 
 small-tests: build
-	find src demo -name '*.hs' | xargs doctest -package-db "$$(ls -d cabal-dev/packages-*.conf)"
+	find src -name '*.hs' | xargs doctest -package-db "$$(ls -d cabal-dev/packages-*.conf)"
 	@echo
 
 
@@ -34,7 +34,7 @@ proofs/%.proof: proofs/%/out.cabal tests/%/expected.cabal
 
 proofs/%/out.cabal: tests/%/in.cabal build
 	mkdir -p $(dir $@)
-	./dist/build/$(NAME)-demo/$(NAME)-demo < $< > $@
+	./dist/build/$(NAME)/$(NAME) < $< > $@
 
 
 clean:
