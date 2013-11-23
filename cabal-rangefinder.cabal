@@ -1,4 +1,4 @@
-Name:                cabal-base
+Name:                cabal-rangefinder
 Version:             0.1
 
 -- A short (one-line) description of the package.
@@ -7,7 +7,7 @@ Synopsis:            A skeleton from which to start your own project.
 -- A longer description of the package.
 -- Description:         
 
-Homepage:            https://github.com/gelisam/cabal-base#readme
+Homepage:            https://github.com/gelisam/cabal-rangefinder#readme
 License:             PublicDomain
 License-file:        LICENSE
 Author:              Samuel Gélineau
@@ -45,8 +45,8 @@ Library
   
   Build-depends:       base >= 4 && < 5
 
-executable cabal-base-demo
+executable cabal-rangefinder-demo
   build-depends:  base >= 4 && < 5,
-                  cabal-base >= 0.1 && < 1
+                  cabal-rangefinder >= 0.1 && < 1
   main-is:        Main.hs
   hs-source-dirs: demo
