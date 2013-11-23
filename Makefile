@@ -25,11 +25,11 @@ small-tests: build
 big-tests: $(patsubst %,proofs/%.proof,$(shell ls tests))
 	-@echo '*** ALL TESTS OK ***'
 
-proofs/%.proof: proofs/%/out.cabal tests/%/expected.cabal
+proofs/%.proof: proofs/%/cabal.out tests/%/cabal.expected
 	diff $^
 	touch $@
 
-proofs/%/out.cabal: tests/%/in.cabal build
+proofs/%/cabal.out: tests/%/cabal.in build
 	mkdir -p $(dir $@)
 	./dist/build/$(NAME)/$(NAME) < $< > $@
 
