@@ -1,0 +1,8 @@
+name:                hello
+version:             0.1.0.0
+build-type:          Simple
+cabal-version:       >=1.10
+
+library
+  exposed-modules:     Hello
+  build-depends:       base >=4.6 && <4.7

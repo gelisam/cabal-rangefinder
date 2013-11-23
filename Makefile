@@ -1,6 +1,6 @@
 NAME="$(shell basename `pwd`)"
 
-.PHONY: all config build doc test small-tests big-tests demo clean clobber
+.PHONY: all config build doc test small-tests big-tests clean clobber
 
 all: build doc test
 
@@ -25,20 +25,16 @@ small-tests: build
 	@echo
 
 
-big-tests: $(patsubst tests/%.expected,proofs/%.proof,$(shell find tests -name '*.expected'))
+big-tests: $(patsubst %,proofs/%.proof,$(shell ls tests))
 	-@echo '*** ALL TESTS OK ***'
 
-proofs/%.proof: proofs/%.out tests/%.expected
+proofs/%.proof: proofs/%/out.cabal tests/%/expected.cabal
 	diff $^
 	touch $@
 
-proofs/%.out: tests/%.in build
+proofs/%/out.cabal: tests/%/in.cabal build
 	mkdir -p $(dir $@)
 	./dist/build/$(NAME)-demo/$(NAME)-demo < $< > $@
-
-
-demo: build
-	./dist/build/$(NAME)-demo/$(NAME)-demo < tests/hello.in
 
 
 clean:
