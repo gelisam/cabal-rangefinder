@@ -22,6 +22,7 @@ Extra-source-files:  README.md,
                      Makefile
 
 executable cabal-rangefinder
-  build-depends:  base >= 4 && < 5
+  build-depends:  base >= 4 && < 5,
+                  Cabal
   main-is:        Main.hs
   hs-source-dirs: src
