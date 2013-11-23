@@ -1,8 +1,8 @@
 NAME="$(shell basename `pwd`)"
 
-.PHONY: all config build doc test small-tests big-tests clean clobber
+.PHONY: all config build test small-tests big-tests clean clobber
 
-all: build doc test
+all: build test
 
 config: dist/setup-config
 
@@ -13,9 +13,6 @@ dist/setup-config:
 build: config
 	cabal-dev build | cat
 	@cabal-dev build &> /dev/null
-
-doc: build
-	find src -name '*.hs' | xargs haddock --optghc='-package-db '"$$(ls -d cabal-dev/packages-*.conf)" --no-warnings --odir=doc --html
 
 
 test: small-tests big-tests
@@ -41,7 +38,7 @@ clean:
 	rm -rf proofs
 
 clobber: clean
-	rm -rf dist doc
+	rm -rf dist
 
 distclean: clobber
 	rm -rf cabal-dev
