@@ -3,6 +3,7 @@ cabal-rangefinder
 
 A tool to fill in the version ranges in a cabal file.
 
+(work in progress. this readme reflect planned, not present functionnality)
 
 purpose
 -------
