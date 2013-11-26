@@ -5,6 +5,6 @@ cabal-version:       >=1.10
 
 library
   build-depends:       base >=4.6 && <4.7,
-                       containers,
-                       mtl
+                       containers -any,
+                       mtl -any
   exposed-modules:     Hello
