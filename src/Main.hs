@@ -64,20 +64,6 @@ dependencyC s = do
 mapFstC :: (String -> a) -> (String, b) -> ParseC (a, b)
 mapFstC f (s, x) = stringC s >> return (f s, x)
 
--- | Like span, but also write fst.
--- >>> testC $ spanC (== 'a') "aaA:Aaa"
--- "aa"
--- ("aa","A:Aaa")
-spanC :: (Char -> Bool) -> String -> ParseC (String, String)
-spanC p = mapFstC id . span p
-
--- | Like break, but also write fst.
--- >>> testC $ breakC (== ':') "aaA:Aaa"
--- "aaA"
--- ("aaA",":Aaa")
-breakC :: (Char -> Bool) -> String -> ParseC (String, String)
-breakC p = mapFstC id . break p
-
 -- | Like snd, but also write fst.
 -- >>> testC $ sndC ("foo",42)
 -- "foo"
