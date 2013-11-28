@@ -24,6 +24,7 @@ Extra-source-files:  README.md,
 executable cabal-rangefinder
   build-depends:  base >= 4 && < 5,
                   Cabal,
+                  mtl,
                   pretty
   main-is:        Main.hs
   hs-source-dirs: src
