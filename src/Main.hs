@@ -1,17 +1,11 @@
 module Main where
 
 import Control.Applicative
-import Control.Arrow
 import Control.Monad.State
 import Control.Monad.Writer
-import Data.Functor
-import Data.List
 import Data.Maybe
 import Distribution.Package
-import Distribution.PackageDescription
-import Distribution.PackageDescription.Parse
 import Distribution.Text
-import Distribution.Verbosity
 import System.Environment
 import System.IO
 import Text.PrettyPrint hiding (empty)
@@ -26,7 +20,7 @@ type ParseC a = StateT String (WriterT Cabal Maybe) a
 
 -- | Print the parsed pieces, simplifies tests.
 testC :: Show a => String -> ParseC a -> IO ()
-testC s = go . runWriterT . (`runStateT` s)
+testC doc = go . runWriterT . (`runStateT` doc)
   where
     go Nothing = putStrLn "Nothing"
     go (Just ((x, s), ys)) = do
