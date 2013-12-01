@@ -35,10 +35,14 @@ readFile' f = do
     s <- readFile f
     length s `seq` return s
 
+printIt :: PackageIndex -> Either String Dependency -> IO ()
+printIt _ (Left s) = print s
+printIt p (Right d) = print $ lookupDependency p d
+
 main :: IO ()
 main = do
     [cabal_file] <- getArgs
     cabal <- parseCabal <$> readFile' cabal_file
     -- mapM_ print cabal
-    length cabal_file `seq` withFile cabal_file WriteMode $ \h -> do
+    withFile cabal_file WriteMode $ \h -> do
       mapM_ (hPutStr h) $ map (either id (render . disp)) cabal
