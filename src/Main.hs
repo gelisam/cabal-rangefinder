@@ -1,6 +1,8 @@
 module Main where
 
 import Control.Applicative
+import Distribution.Package
+import Distribution.Simple.PackageIndex
 import Distribution.Text
 import System.Environment
 import System.IO
