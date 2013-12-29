@@ -1,6 +1,8 @@
 module Main where
 
 import Control.Applicative
+-- import Control.Arrow
+import Data.Either
 import Distribution.Package
 import Distribution.Simple.PackageIndex
 import Distribution.Text
@@ -62,6 +64,14 @@ main = do
     version_file <- getCachePath
     versionMap <- parseVersionMap <$> readFile' version_file
     -- mapM_ print versionMap
+    
+    let package (Dependency p _) = p
+    let our_packages = map package $ rights cabal
+    -- mapM_ print our_packages
+    
+    let is_ours = (`elem` our_packages)
+    let our_versions = filter (is_ours . fst) versionMap
+    -- mapM_ print $ map (display *** map display) our_versions
     
     withFile cabal_file WriteMode $ \h -> do
       mapM_ (hPutStr h) $ map (either id (render . disp)) cabal
