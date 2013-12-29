@@ -1,3 +1,4 @@
+-- | The monad in which Parse.parseCabal can be written easily.
 module ParseC where
 
 import Control.Applicative
