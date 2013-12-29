@@ -1,17 +1,17 @@
--- | The monad in which Parse.parseCabal can be written easily.
-module ParseC where
+-- | To parse a "package-name.cabal" file.
+module CabalFile.Parser (parseCabal) where
 
 import Control.Applicative
 import Control.Monad.State
 import Control.Monad.Writer
+import Data.Maybe
 import Distribution.Package
 import Distribution.Text
 import Text.PrettyPrint hiding (empty)
 import Text.Printf
 
+import CabalFile.Types
 
--- Unlike Distribution.PackageDescription, we keep the whitespace.
-type Cabal = [Either String Dependency]
 
 -- | Parse a .cabal file by writing it piece by piece.
 type ParseC a = StateT String (WriterT Cabal Maybe) a
@@ -146,3 +146,36 @@ lineC = do
 -- "hello"
 indentC :: ParseC Int
 indentC = splitXform splitWhitespace length
+
+
+parseCabal :: String -> Cabal
+parseCabal = fromJust . execWriterT . execStateT cabal
+  where
+    cabal :: ParseC ()
+    cabal = eofC <|> ((build_depends <|> lineC) >> cabal)
+    
+    build_depends :: ParseC ()
+    build_depends = do
+        i <- indentC
+        stringC "build-depends"
+        whitespaceC
+        stringC ":"
+        dependency i
+    
+    dependency :: Int -> ParseC ()
+    dependency i = do
+        spacing i
+        dependencyC
+        (spacing i >> stringC "," >> dependency i) <|> eolC
+    
+    -- whitespace, including newlines, but stay withing the block of
+    -- data which is indented by more than i characters.
+    spacing :: Int -> ParseC ()
+    spacing i = do
+        whitespaceC
+        go <|> return ()
+      where
+        go = do
+            eolC
+            j <- indentC
+            go <|> guard (j > i)

@@ -12,7 +12,8 @@ import System.FilePath
 import System.IO
 import Text.PrettyPrint hiding (empty)
 
-import Parse
+import CabalFile
+import VersionFile
 
 
 -- | The first action which succeeds, assuming all later action also do.

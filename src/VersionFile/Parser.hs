@@ -1,5 +1,31 @@
--- | The monad in which Parse.parseVersionMap can be written easily.
-module ParseV where
+-- | To parse the version map data hidden in cabal's local cache file,
+--   located at "~/.cabal/packages/hackage.haskell.org/00-index.cache".
+--   It looks like this, but much longer:
+--   
+--     pref-ver: imagemagick >=0.0.2
+--     pkg: imagemagick 0.0.1 b# 123041
+--     pkg: imagemagick 0.0.2 b# 123078
+--     pkg: imagemagick 0.0.3 b# 123116
+--     pkg: imagemagick 0.0.3.1 b# 123154
+--     pkg: mtl 1.0 b# 143620
+--     pkg: mtl 1.1.0.0 b# 143623
+--     pkg: mtl 1.1.0.1 b# 143627
+--     pkg: mtl 1.1.0.2 b# 143631
+--     pkg: mtl 1.1.1.0 b# 143635
+--     pkg: mtl 1.1.1.1 b# 143639
+--     pkg: mtl 2.0.0.0 b# 143643
+--     pkg: mtl 2.0.1.0 b# 143647
+--     pkg: mtl 2.1 b# 143651
+--     pkg: mtl 2.1.1 b# 143655
+--     pkg: mtl 2.1.2 b# 143659
+--   
+--   I assume that the "pref-ver" part remembers the version ranges which were
+--   requested by the user on the command-line, while the "pkg" part remembers
+--   which versions of each package are available. This mapping between each
+--   package name and its available versions is what we call a version map.
+--   
+--   I don't know what the "b# 123456" part means. We ignore it.
+module VersionFile.Parser (parseVersionMap) where
 
 import Control.Arrow
 import Data.Function
@@ -10,10 +36,9 @@ import Distribution.Text
 import Distribution.Version (Version)
 
 
--- A simple association list. Profile before you optimize :)
-type VersionMap = [(PackageName, [Version])]
+import VersionFile.Types
 
--- A much simpler monad stack than for ParseC :)
+-- A much simpler monad stack than for CabalFile.Parser :)
 type ParseV a = String -> Maybe a
 
 -- | Print the parsed piece, simplifies tests.
@@ -76,3 +101,7 @@ versionMap = fmap merge . pkgs
     same_package = (==) `on` fst
     package = fst . head
     versions = map snd
+
+
+parseVersionMap :: String -> VersionMap
+parseVersionMap = fromJust . versionMap
