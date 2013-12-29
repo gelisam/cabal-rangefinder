@@ -6,6 +6,7 @@ import Control.Monad.Writer
 import Data.Maybe
 
 import ParseC
+import ParseV
 
 
 parseCabal :: String -> Cabal
@@ -39,3 +40,6 @@ parseCabal = fromJust . execWriterT . execStateT cabal
             eolC
             j <- indentC
             go <|> guard (j > i)
+
+parseVersionMap :: String -> VersionMap
+parseVersionMap = fromJust . versionMap
