@@ -6,9 +6,7 @@ import Data.Either
 import Distribution.Package
 import Distribution.Simple.PackageIndex
 import Distribution.Text
-import System.Directory
 import System.Environment
-import System.FilePath
 import System.IO
 import Text.PrettyPrint hiding (empty)
 
@@ -51,18 +49,13 @@ getCabalPath = do
     [cabal_file] <- getArgs
     return cabal_file
 
-getCachePath :: IO FilePath
-getCachePath = do
-    home <- getHomeDirectory
-    return $ home </> ".cabal/packages/hackage.haskell.org/00-index.cache"
-
 main :: IO ()
 main = do
     cabal_file <- getCabalPath
     cabal <- parseCabal <$> readFile' cabal_file
     -- mapM_ print cabal
     
-    version_file <- getCachePath
+    version_file <- getVersionPath
     versionMap <- parseVersionMap <$> readFile' version_file
     -- mapM_ print versionMap
     

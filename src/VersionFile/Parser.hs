@@ -25,7 +25,7 @@
 --   package name and its available versions is what we call a version map.
 --   
 --   I don't know what the "b# 123456" part means. We ignore it.
-module VersionFile.Parser (parseVersionMap) where
+module VersionFile.Parser (getVersionPath, parseVersionMap) where
 
 import Control.Arrow
 import Data.Function
@@ -34,6 +34,8 @@ import Data.Maybe
 import Distribution.Package (PackageName)
 import Distribution.Text
 import Distribution.Version (Version)
+import System.Directory
+import System.FilePath
 
 import VersionFile.Types
 import VersionFile.Parser.Test ()
@@ -41,6 +43,12 @@ import VersionFile.Parser.Types
 
 -- $setup
 -- >>> import VersionFile.Parser.Test
+
+
+getVersionPath :: IO FilePath
+getVersionPath = do
+    home <- getHomeDirectory
+    return $ home </> ".cabal/packages/hackage.haskell.org/00-index.cache"
 
 
 -- |
