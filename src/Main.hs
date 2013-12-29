@@ -43,6 +43,11 @@ printIt :: PackageIndex -> Either String Dependency -> IO ()
 printIt _ (Left s) = print s
 printIt p (Right d) = print $ lookupDependency p d
 
+getCabalPath :: IO FilePath
+getCabalPath = do
+    [cabal_file] <- getArgs
+    return cabal_file
+
 getCachePath :: IO FilePath
 getCachePath = do
     home <- getHomeDirectory
@@ -50,11 +55,13 @@ getCachePath = do
 
 main :: IO ()
 main = do
-    [cabal_file] <- getArgs
-    version_file <- getCachePath
+    cabal_file <- getCabalPath
     cabal <- parseCabal <$> readFile' cabal_file
-    versionMap <- parseVersionMap <$> readFile' version_file
     -- mapM_ print cabal
+    
+    version_file <- getCachePath
+    versionMap <- parseVersionMap <$> readFile' version_file
     -- mapM_ print versionMap
+    
     withFile cabal_file WriteMode $ \h -> do
       mapM_ (hPutStr h) $ map (either id (render . disp)) cabal
