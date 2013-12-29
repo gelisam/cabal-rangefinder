@@ -5,9 +5,7 @@ import Control.Applicative
 import Control.Monad.State
 import Control.Monad.Writer
 import Data.Maybe
-import Distribution.Package
 import Distribution.Text
-import Text.PrettyPrint hiding (empty)
 import Text.Printf
 
 import CabalFile.Types
