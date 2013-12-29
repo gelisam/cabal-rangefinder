@@ -4,7 +4,9 @@ import Control.Applicative
 import Distribution.Package
 import Distribution.Simple.PackageIndex
 import Distribution.Text
+import System.Directory
 import System.Environment
+import System.FilePath
 import System.IO
 import Text.PrettyPrint hiding (empty)
 
@@ -41,10 +43,18 @@ printIt :: PackageIndex -> Either String Dependency -> IO ()
 printIt _ (Left s) = print s
 printIt p (Right d) = print $ lookupDependency p d
 
+getCachePath :: IO FilePath
+getCachePath = do
+    home <- getHomeDirectory
+    return $ home </> ".cabal/packages/hackage.haskell.org/00-index.cache"
+
 main :: IO ()
 main = do
     [cabal_file] <- getArgs
+    version_file <- getCachePath
     cabal <- parseCabal <$> readFile' cabal_file
+    versionMap <- parseVersionMap <$> readFile' version_file
     -- mapM_ print cabal
+    -- mapM_ print versionMap
     withFile cabal_file WriteMode $ \h -> do
       mapM_ (hPutStr h) $ map (either id (render . disp)) cabal
