@@ -30,9 +30,9 @@ testC doc = go . runWriterT . (`runStateT` doc)
 
 
 splitConsume :: (Functor m, Monad m)
-          => (s -> (e, s))
-          -> (e -> m a)
-          -> StateT s m a
+             => (s -> (e, s))
+             -> (e -> m a)
+             -> StateT s m a
 splitConsume split consume = do
     (e, s) <- split <$> get
     put s
