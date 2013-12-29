@@ -6,25 +6,13 @@ import Control.Monad.State
 import Control.Monad.Writer
 import Data.Maybe
 import Distribution.Text
-import Text.Printf
 
 import CabalFile.Types
+import CabalFile.Parser.Test ()
+import CabalFile.Parser.Types
 
-
--- | Parse a .cabal file by writing it piece by piece.
-type ParseC a = StateT String (WriterT Cabal Maybe) a
-
--- | Print the parsed pieces, simplifies tests.
-testC :: Show a => String -> ParseC a -> IO ()
-testC doc = go . runWriterT . (`runStateT` doc)
-  where
-    go Nothing = putStrLn "Nothing"
-    go (Just ((x, s), ys)) = do
-      mapM_ putStrLn $ map show' ys
-      print x
-      unless (null s) $ print s
-    show' (Left s) = show s
-    show' (Right d) = printf "[%s]" $ display d
+-- $setup
+-- >>> import CabalFile.Parser.Test
 
 
 splitConsume :: (Functor m, Monad m)

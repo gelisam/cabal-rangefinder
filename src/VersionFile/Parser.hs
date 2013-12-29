@@ -35,27 +35,13 @@ import Distribution.Package (PackageName)
 import Distribution.Text
 import Distribution.Version (Version)
 
-
 import VersionFile.Types
+import VersionFile.Parser.Test ()
+import VersionFile.Parser.Types
 
--- A much simpler monad stack than for CabalFile.Parser :)
-type ParseV a = String -> Maybe a
+-- $setup
+-- >>> import VersionFile.Parser.Test
 
--- | Print the parsed piece, simplifies tests.
--- >>> testV id $ return 4
--- 4
-testV :: Show s => (a -> s) -> Maybe a -> IO ()
-testV _ Nothing = putStrLn "Nothing"
-testV show' (Just x) = print (show' x)
-
--- | More testing, laying out each item on a separate line.
--- >>> testVs id $ return [1, 2, 3]
--- 1
--- 2
--- 3
-testVs :: Show s => (a -> s) -> Maybe [a] -> IO ()
-testVs _ Nothing = putStrLn "Nothing"
-testVs show' (Just xs) = mapM_ (print . show') xs
 
 -- |
 -- >>> testV id (packageName "xturtle")
