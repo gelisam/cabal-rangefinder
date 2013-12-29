@@ -26,7 +26,7 @@ testC doc = go . runWriterT . (`runStateT` doc)
       print x
       unless (null s) $ print s
     show' (Left s) = show s
-    show' (Right d) = printf "[%s]" $ render $ disp d
+    show' (Right d) = printf "[%s]" $ display d
 
 
 splitConsume :: (Functor m, Monad m)
