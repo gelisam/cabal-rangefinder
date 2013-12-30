@@ -1,7 +1,6 @@
 module Main where
 
 -- import Control.Arrow
-import Data.Either
 import Distribution.Package
 import Distribution.Simple.PackageIndex
 -- import Distribution.Text
@@ -49,8 +48,7 @@ main = do
     versionMap <- readVersionMap
     -- mapM_ print versionMap
     
-    let package (Dependency p _) = p
-    let our_packages = map package $ rights cabal
+    let our_packages = packages cabal
     -- mapM_ print our_packages
     
     let is_ours = (`elem` our_packages)

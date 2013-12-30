@@ -1,5 +1,12 @@
 -- | Re-export the CabalFile.* submodules.
-module CabalFile (Cabal, readCabal, writeCabal) where
+module CabalFile
+  ( Cabal
+  , dependencies
+  , packages
+  
+  , readCabal
+  , writeCabal
+  ) where
 
 import CabalFile.Types
 import CabalFile.Parser

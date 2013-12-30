@@ -4,6 +4,7 @@
 --   back to disk and we don't want to obliterate the user's indentation style.
 module CabalFile.Types where
 
+import Data.Either
 import Distribution.Package
 
 
@@ -11,3 +12,11 @@ import Distribution.Package
 -- it already has a parser and a pretty-printer. However, we cannot use that
 -- representation because we need to keep the whitespace information intact.
 type Cabal = [Either String Dependency]
+
+dependencies :: Cabal -> [Dependency]
+dependencies = rights
+
+packages :: Cabal -> [PackageName]
+packages = map package . dependencies
+  where
+    package (Dependency p _) = p
