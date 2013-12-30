@@ -51,8 +51,7 @@ main = do
     let our_packages = packages cabal
     -- mapM_ print our_packages
     
-    let is_ours = (`elem` our_packages)
-    let our_versions = filter (is_ours . fst) versionMap
+    let our_versions = versionMap `restricted_to` our_packages
     -- mapM_ print $ map (display *** map display) our_versions
     
     writeCabal cabal_file cabal
