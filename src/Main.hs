@@ -7,6 +7,7 @@ import Distribution.Package
 import Distribution.Simple.PackageIndex
 import System.Environment
 
+import System.IO.Strict
 import CabalFile
 import VersionFile
 
@@ -30,12 +31,6 @@ binary_search d mxs = do
     i = length mxs `div` 2
     (mxs1, mx:mxs2) = splitAt i mxs
 
-
--- like readFile, but without the lazy IO
-readFile' :: FilePath -> IO String
-readFile' f = do
-    s <- readFile f
-    length s `seq` return s
 
 printIt :: PackageIndex -> Either String Dependency -> IO ()
 printIt _ (Left s) = print s
