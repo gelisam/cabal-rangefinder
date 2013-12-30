@@ -1,5 +1,8 @@
 -- | To parse a "package-name.cabal" file.
-module CabalFile.Parser (readCabal) where
+module CabalFile.Parser
+  ( parseCabal
+  , readCabal
+  ) where
 
 import Control.Applicative
 import Control.Monad.State
