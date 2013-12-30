@@ -1,6 +1,5 @@
 module Main where
 
-import Control.Applicative
 -- import Control.Arrow
 import Data.Either
 import Distribution.Package
@@ -8,7 +7,6 @@ import Distribution.Simple.PackageIndex
 -- import Distribution.Text
 import System.Environment
 
-import System.IO.Strict
 import CabalFile
 import VersionFile
 
@@ -48,8 +46,7 @@ main = do
     cabal <- readCabal cabal_file
     -- mapM_ print cabal
     
-    version_file <- getVersionPath
-    versionMap <- parseVersionMap <$> readFile' version_file
+    versionMap <- readVersionMap
     -- mapM_ print versionMap
     
     let package (Dependency p _) = p

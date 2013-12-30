@@ -1,5 +1,5 @@
 -- | Re-export the VersionFile.* submodules.
-module VersionFile (VersionMap, getVersionPath, parseVersionMap) where
+module VersionFile (VersionMap, readVersionMap) where
 
 import VersionFile.Types
 import VersionFile.Parser

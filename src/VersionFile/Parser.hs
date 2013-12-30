@@ -25,8 +25,13 @@
 --   package name and its available versions is what we call a version map.
 --   
 --   I don't know what the "b# 123456" part means. We ignore it.
-module VersionFile.Parser (getVersionPath, parseVersionMap) where
+module VersionFile.Parser
+  ( getVersionPath
+  , readVersionMap
+  , parseVersionMap
+  ) where
 
+import Control.Applicative
 import Control.Arrow
 import Data.Function
 import Data.List
@@ -99,3 +104,8 @@ versionMap = fmap merge . pkgs
 
 parseVersionMap :: String -> VersionMap
 parseVersionMap = fromJust . versionMap
+
+readVersionMap :: IO VersionMap
+readVersionMap = do
+    path <- getVersionPath
+    parseVersionMap <$> readFile path
