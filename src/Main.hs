@@ -5,10 +5,7 @@ import Control.Applicative
 import Data.Either
 import Distribution.Package
 import Distribution.Simple.PackageIndex
-import Distribution.Text
 import System.Environment
-import System.IO
-import Text.PrettyPrint hiding (empty)
 
 import CabalFile
 import VersionFile
@@ -67,5 +64,4 @@ main = do
     let our_versions = filter (is_ours . fst) versionMap
     -- mapM_ print $ map (display *** map display) our_versions
     
-    withFile cabal_file WriteMode $ \h -> do
-      mapM_ (hPutStr h) $ map (either id (render . disp)) cabal
+    writeCabal cabal_file cabal
