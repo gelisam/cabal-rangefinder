@@ -27,7 +27,9 @@ executable cabal-rangefinder
                   directory,
                   filepath,
                   mtl,
-                  pretty
+                  pretty,
+                  process,
+                  transformers
   main-is:        Main.hs
   hs-source-dirs: src
   ghc-options:    -Wall
