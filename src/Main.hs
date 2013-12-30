@@ -1,8 +1,6 @@
 module Main where
 
 -- import Control.Arrow
-import Distribution.Package
-import Distribution.Simple.PackageIndex
 -- import Distribution.Text
 import System.Environment
 
@@ -29,10 +27,6 @@ binary_search d mxs = do
     i = length mxs `div` 2
     (mxs1, mx:mxs2) = splitAt i mxs
 
-
-printIt :: PackageIndex -> Either String Dependency -> IO ()
-printIt _ (Left s) = print s
-printIt p (Right d) = print $ lookupDependency p d
 
 getCabalPath :: IO FilePath
 getCabalPath = do
