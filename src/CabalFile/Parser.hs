@@ -1,5 +1,5 @@
 -- | To parse a "package-name.cabal" file.
-module CabalFile.Parser (parseCabal) where
+module CabalFile.Parser (readCabal) where
 
 import Control.Applicative
 import Control.Monad.State
@@ -10,6 +10,7 @@ import Distribution.Text
 import CabalFile.Types
 import CabalFile.Parser.Test ()
 import CabalFile.Parser.Types
+import System.IO.Strict
 
 -- $setup
 -- >>> import CabalFile.Parser.Test
@@ -165,3 +166,6 @@ parseCabal = fromJust . execWriterT . execStateT cabal
             eolC
             j <- indentC
             go <|> guard (j > i)
+
+readCabal :: FilePath -> IO Cabal
+readCabal = fmap parseCabal . readFile'

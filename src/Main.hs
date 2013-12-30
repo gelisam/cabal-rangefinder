@@ -44,7 +44,7 @@ getCabalPath = do
 main :: IO ()
 main = do
     cabal_file <- getCabalPath
-    cabal <- parseCabal <$> readFile' cabal_file
+    cabal <- readCabal cabal_file
     -- mapM_ print cabal
     
     version_file <- getVersionPath
