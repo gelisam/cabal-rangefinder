@@ -1,3 +1,4 @@
+{-# LANGUAGE ImplicitParams #-}
 module Main where
 
 -- import Control.Arrow
@@ -17,24 +18,27 @@ import Search
 
 
 -- | With the given Cabal file, does the project build?
-build :: FilePath -> Cabal -> MaybeIO
-build cabal_file cabal = do
-    lift $ writeCabal cabal_file cabal
+build_with_cabal :: (?cabal_file :: FilePath) => Cabal -> MaybeIO
+build_with_cabal cabal = do
+    lift $ writeCabal ?cabal_file cabal
     run "cabal-dev install-deps"
     run "cabal-dev build"
 
-build_with_version :: FilePath -> Cabal -> PackageName -> Version -> MaybeIO
-build_with_version cabal_file cabal p v = build cabal_file cabal'
+-- | How about with the default Cabal plus a specific version constrain?
+build_with_version :: (?cabal_file :: FilePath, ?cabal :: Cabal)
+                   => PackageName -> Version
+                   -> MaybeIO
+build_with_version p v = build_with_cabal cabal'
   where
-    cabal' = cabal // [(p, thisVersion v)]
+    cabal' = ?cabal // [(p, thisVersion v)]
 
--- | Same, but with the type expected by binary_search
-builds_with_version :: FilePath -> Cabal
-                    -> PackageName -> Version
+-- | Same, but with the type expected by binary_search.
+builds_with_version :: (?cabal_file :: FilePath, ?cabal :: Cabal)
+                    => PackageName -> Version
                     -> IO (Maybe Version)
-builds_with_version cabal_file cabal p v = runMaybeT
-                                         $ fmap (const v)
-                                         $ build_with_version cabal_file cabal p v
+builds_with_version p v = runMaybeT
+                        $ fmap (const v)
+                        $ build_with_version p v
 
 
 getCabalPath :: IO FilePath
@@ -48,7 +52,10 @@ main = do
     cabal <- readCabal cabal_file
     -- mapM_ print cabal
     
-    untouchedOk <- succeeds $ build cabal_file cabal
+    let ?cabal_file = cabal_file
+    let ?cabal = cabal
+    
+    untouchedOk <- succeeds $ build_with_cabal cabal
     when (not untouchedOk) $ do
       error "You should at least start with a working .cabal file."
     
@@ -61,6 +68,6 @@ main = do
     let our_versions = versionMap `restricted_to` our_packages
     -- mapM_ print $ map (display *** map display) our_versions
     
-    finalOk <- succeeds $ build cabal_file cabal
+    finalOk <- succeeds $ build_with_cabal cabal
     when (not finalOk) $ do
       error "I spent all this time building the perfect .cabal file, and it doesn't even run :("
