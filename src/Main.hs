@@ -5,6 +5,7 @@ import Control.Applicative
 import Data.Either
 import Distribution.Package
 import Distribution.Simple.PackageIndex
+-- import Distribution.Text
 import System.Environment
 
 import System.IO.Strict
