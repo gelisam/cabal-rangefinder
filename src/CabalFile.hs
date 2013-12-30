@@ -3,6 +3,7 @@ module CabalFile
   ( Cabal
   , dependencies
   , packages
+  , (//)
   
   , readCabal
   , writeCabal

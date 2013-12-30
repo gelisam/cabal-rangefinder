@@ -6,6 +6,7 @@ module CabalFile.Types where
 
 import Data.Either
 import Distribution.Package
+import Distribution.Version
 
 
 -- The Cabal library already has the type Distribution.PackageDescription, and
@@ -20,3 +21,11 @@ packages :: Cabal -> [PackageName]
 packages = map package . dependencies
   where
     package (Dependency p _) = p
+
+-- Replace the given dependencies
+(//) :: Cabal -> [(PackageName, VersionRange)] -> Cabal
+[] // _ = []
+(Left s:xs) // ds = Left s : (xs // ds)
+(Right (Dependency p v):xs) // ds = case lookup p ds of
+    Nothing -> Right (Dependency p v)  : (xs // ds)
+    Just v' -> Right (Dependency p v') : (xs // ds)

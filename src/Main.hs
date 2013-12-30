@@ -3,7 +3,10 @@ module Main where
 -- import Control.Arrow
 import Control.Monad
 import Control.Monad.Trans
+import Control.Monad.Trans.Maybe
+import Distribution.Package
 -- import Distribution.Text
+import Distribution.Version
 import System.Environment
 
 import CabalFile
@@ -19,6 +22,19 @@ build cabal_file cabal = do
     lift $ writeCabal cabal_file cabal
     run "cabal-dev install-deps"
     run "cabal-dev build"
+
+build_with_version :: FilePath -> Cabal -> PackageName -> Version -> MaybeIO
+build_with_version cabal_file cabal p v = build cabal_file cabal'
+  where
+    cabal' = cabal // [(p, thisVersion v)]
+
+-- | Same, but with the type expected by binary_search
+builds_with_version :: FilePath -> Cabal
+                    -> PackageName -> Version
+                    -> IO (Maybe Version)
+builds_with_version cabal_file cabal p v = runMaybeT
+                                         $ fmap (const v)
+                                         $ build_with_version cabal_file cabal p v
 
 
 getCabalPath :: IO FilePath
