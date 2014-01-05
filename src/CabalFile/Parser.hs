@@ -147,7 +147,8 @@ parseCabal = fromJust . execWriterT . execStateT cabal
     build_depends :: ParseC ()
     build_depends = do
         i <- indentC
-        stringC "build-depends"
+        stringC "build-depends" <|> stringC "Build-Depends"
+                                <|> stringC "Build-depends"
         whitespaceC
         stringC ":"
         dependency i

@@ -1,0 +1,11 @@
+Name:                hello
+Version:             0.1.0.0
+Build-Type:          Simple
+Cabal-Version:       >=1.10
+
+Library
+  Build-Depends:       base >=4.6.0.1,
+                       containers >=0.4.2.1,
+
+                       mtl >=2.1.2
+  Exposed-Modules:     Hello
