@@ -14,12 +14,12 @@ One common reason for build failures is unspecified version ranges.
                     containers,
                     mtl
 
-But how do you know which versions of each package your code is compatible with? Unless you are very familiar with the history of each package, your only choice is to test with many versions. cabal-rangefinder automates the process.
+But how do you know which versions of each package your code is compatible with? Unless you are very familiar with the history of each package, your only choice is to test with many versions. Cabal-rangefinder automates the process.
 
 usage
 -----
 
-Simply call `cabal-rangefinder myproject.cabal`, and wait while your program gets compiled with every version of every dependency. Only the dependencies which do not specify any version range are investigated.
+Simply call `cabal-rangefinder myproject.cabal`, and wait while your program gets compiled with every version of every dependency.
 
 correctness
 -----------
