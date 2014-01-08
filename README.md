@@ -3,8 +3,6 @@ cabal-rangefinder
 
 A tool to fill in the version ranges in a cabal file.
 
-(work in progress. this readme reflect planned, not present functionnality)
-
 purpose
 -------
 
@@ -26,6 +24,6 @@ Simply call `cabal-rangefinder myproject.cabal`, and wait while your program get
 correctness
 -----------
 
-We assume that the versions currently installed in ./cabal-dev already work fine. That is, you should use cabal-rangefinder to expand your version ranges, not to find a version which works in the first place.
+We assume that the versions currently installed in ./cabal-dev already work fine with the latest version of everything. That is, you should use cabal-rangefinder to expand the lower end of your version ranges, not to find a version which works in the first place.
 
-We also assume that if versions X and Y both work, then so does all the versions in between.
+We also assume that if versions X and Y both work, then so do all the versions in between.
