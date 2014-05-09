@@ -7,19 +7,17 @@ all: build test
 config: dist/setup-config
 
 dist/setup-config:
-	cabal-dev install-deps
-	cabal-dev configure
+	cabal sandbox init
+	cabal install --only-dependencies
 
 build: config
-	cabal-dev build | cat
-	@cabal-dev build &> /dev/null
+	cabal build
 
 
 test: small-tests big-tests
 
 small-tests: build
-	find src -name '*.hs' | xargs doctest -package-db "$$(ls -d cabal-dev/packages-*.conf)"
-	@echo
+	find src -name '*.hs' | xargs doctest -package-db "$$(ls -d .cabal-sandbox/*-packages.conf.d)"
 
 
 big-tests: $(patsubst %,proofs/%.proof,$(shell ls tests))
@@ -43,4 +41,4 @@ clobber: clean
 	rm -rf dist
 
 distclean: clobber
-	rm -rf cabal-dev
+	rm -rf cabal.sandbox.config .cabal-sandbox

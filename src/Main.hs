@@ -22,9 +22,8 @@ import Search
 build_with_cabal :: (?cabal_file :: FilePath) => Cabal -> MaybeIO
 build_with_cabal cabal = do
     lift $ writeCabal ?cabal_file cabal
-    run "cabal-dev install-deps"
-    run "cabal-dev configure"
-    run "cabal-dev build"
+    run "cabal install --only-dependencies"
+    run "cabal build"
     lift $ putStrLn "cabal-rangefinder: OK"
 
 -- | How about with the default Cabal plus a specific version constrain?
