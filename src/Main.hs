@@ -18,6 +18,15 @@ import MaybeIO
 import Search
 
 
+-- | Some packages are "pinned" to a particular version by the system, and no
+--   other versions may be installed. So don't try.
+pinned_packages :: [String]
+pinned_packages = ["base"]
+
+is_pinned :: PackageName -> Bool
+is_pinned (PackageName name) = (name `elem` pinned_packages)
+
+
 -- | With the given Cabal file, does the project build?
 build_with_cabal :: (?cabal_file :: FilePath) => Cabal -> MaybeIO
 build_with_cabal cabal = do
@@ -76,7 +85,8 @@ main = do
     versionMap <- readVersionMap
     -- mapM_ print versionMap
     
-    let our_packages = packages cabal
+    let all_packages = packages cabal
+    let our_packages = filter (not . is_pinned) all_packages
     -- mapM_ print our_packages
     
     let our_versions = versionMap `restricted_to` our_packages
