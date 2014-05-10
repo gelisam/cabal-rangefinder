@@ -1,3 +1,6 @@
+# you can either build via "make build" or "cabal build".
+# however, to run the tests, you may only use "make test", not "cabal test".
+
 NAME="$(shell basename `pwd`)"
 
 .PHONY: all config build test small-tests big-tests clean clobber
