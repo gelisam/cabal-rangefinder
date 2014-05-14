@@ -32,9 +32,9 @@ build_with_cabal :: (?cabal_file :: FilePath) => Cabal -> MaybeIO
 build_with_cabal cabal = do
     lift $ writeCabal ?cabal_file cabal
     run "rm -rf dist cabal.sandbox.config .cabal-sandbox"
-    run "cabal sandbox init"
-    run "cabal install --only-dependencies"
-    run "cabal build"
+    run "cabal -v0 sandbox init"
+    run "cabal -v0 install --only-dependencies"
+    run "cabal -v0 build"
     lift $ putStrLn "cabal-rangefinder: OK"
 
 -- | How about with the default Cabal plus a specific version constrain?
@@ -80,9 +80,11 @@ main = do
     let ?cabal_file = cabal_file
     let ?cabal = cabal
     
+    putStrLn "cabal-rangefinder: trying original .cabal file"
     untouchedOk <- succeeds $ build_with_cabal cabal
-    when (not untouchedOk) $ do
-      error "You should at least start with a working .cabal file."
+    if untouchedOk
+      then putStrLn "cabal-rangefinder: OK"
+      else error "You should at least start with a working .cabal file."
     
     versionMap <- readVersionMap
     -- mapM_ print versionMap
