@@ -20,6 +20,7 @@ build: config
 test: small-tests big-tests
 
 small-tests: build
+	cabal install QuickCheck
 	find src -name '*.hs' | xargs doctest -package-db "$$(ls -d .cabal-sandbox/*-packages.conf.d)"
 
 
