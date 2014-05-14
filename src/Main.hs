@@ -31,6 +31,8 @@ is_pinned (PackageName name) = (name `elem` pinned_packages)
 build_with_cabal :: (?cabal_file :: FilePath) => Cabal -> MaybeIO
 build_with_cabal cabal = do
     lift $ writeCabal ?cabal_file cabal
+    run "rm -rf dist cabal.sandbox.config .cabal-sandbox"
+    run "cabal sandbox init"
     run "cabal install --only-dependencies"
     run "cabal build"
     lift $ putStrLn "cabal-rangefinder: OK"
