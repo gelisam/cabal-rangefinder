@@ -82,9 +82,8 @@ main = do
     
     putStrLn "cabal-rangefinder: trying original .cabal file"
     untouchedOk <- succeeds $ build_with_cabal cabal
-    if untouchedOk
-      then putStrLn "cabal-rangefinder: OK"
-      else error "You should at least start with a working .cabal file."
+    when (not untouchedOk) $ do
+      error "You should at least start with a working .cabal file."
     
     versionMap <- readVersionMap
     -- mapM_ print versionMap
