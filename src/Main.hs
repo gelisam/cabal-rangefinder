@@ -21,7 +21,32 @@ import Search
 -- | Some packages are "pinned" to a particular version by the system, and no
 --   other versions may be installed. So don't try.
 pinned_packages :: [String]
-pinned_packages = ["base"]
+pinned_packages = [ "Cabal"
+                  , "array"
+                  , "base"
+                  , "bin-package-db"
+                  , "binary"
+                  , "bytestring"
+                  , "containers"
+                  , "deepseq"
+                  , "directory"
+                  , "filepath"
+                  , "ghc"
+                  , "ghc-prim"
+                  , "haskell2010"
+                  , "haskell98"
+                  , "hoopl"
+                  , "hpc"
+                  , "integer-gmp"
+                  , "old-locale"
+                  , "old-time"
+                  , "pretty"
+                  , "process"
+                  , "rts"
+                  , "template-haskell"
+                  , "time"
+                  , "unix"
+                  ]
 
 is_pinned :: PackageName -> Bool
 is_pinned (PackageName name) = (name `elem` pinned_packages)
