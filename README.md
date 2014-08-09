@@ -6,7 +6,7 @@ A tool to fill in the version ranges in a cabal file.
 purpose
 -------
 
-Suppose you have a Haskell project which builds fine on your machine with `cabal-dev install`. Will it also build fine on other machines?
+Suppose you have a Haskell project which builds fine on your machine with `cabal install`. Will it also build fine on other machines?
 
 One common reason for build failures is unspecified version ranges.
 
@@ -24,6 +24,6 @@ Simply call `cabal-rangefinder myproject.cabal`, and wait while your program get
 correctness
 -----------
 
-We assume that the versions currently installed in ./cabal-dev already work fine with the latest version of everything. That is, you should use cabal-rangefinder to expand the lower end of your version ranges, not to find a version which works in the first place.
+We assume that the current cabal file already compiles fine with the latest version of everything. That is, you should use cabal-rangefinder to expand the lower end of your version ranges, not to find a version which works in the first place.
 
 We also assume that if versions X and Y both work, then so do all the versions in between.
