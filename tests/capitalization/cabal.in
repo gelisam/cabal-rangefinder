@@ -5,7 +5,7 @@ Cabal-Version:       >=1.10
 
 Library
   Build-Depends:       base >= 4.6,
-                       containers,
+                       containers -any,
 
                        mtl
   Exposed-Modules:     Hello
