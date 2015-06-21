@@ -7,5 +7,5 @@ Library
   Build-Depends:       base >=4.6,
                        containers -any,
 
-                       mtl >=2.1.2
+                       mtl >=2.2
   Exposed-Modules:     Hello
