@@ -1,4 +1,4 @@
-Name:                hello
+Name:                capitalization
 Version:             0.1.0.0
 Build-Type:          Simple
 Cabal-Version:       >=1.10
