@@ -58,7 +58,7 @@ getVersionPath = do
 
 -- |
 -- >>> testV id (packageName "xturtle")
--- PackageName "xturtle"
+-- PackageName {unPackageName = "xturtle"}
 packageName :: ParseV PackageName
 packageName = simpleParse
 
