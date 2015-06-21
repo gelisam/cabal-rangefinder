@@ -12,4 +12,5 @@ type VersionMap = [(PackageName, [Version])]
 restricted_to :: VersionMap -> [PackageName] -> VersionMap
 restricted_to v packages = filter (go . fst) v
   where
+    go :: PackageName -> Bool
     go = (`elem` packages)

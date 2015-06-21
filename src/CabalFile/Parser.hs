@@ -1,4 +1,5 @@
 -- | To parse a "package-name.cabal" file.
+{-# LANGUAGE ScopedTypeVariables #-}
 module CabalFile.Parser
   ( parseCabal
   , readCabal
@@ -28,9 +29,10 @@ splitConsume split consume = do
     put s
     lift $ consume e
 
-splitXform :: (String -> (String, String)) -> (String -> a) -> ParseC a
+splitXform :: forall a. (String -> (String, String)) -> (String -> a) -> ParseC a
 splitXform split f = splitConsume split go
   where
+    go :: String -> WriterT Cabal Maybe a
     go s = do
         tell [Left s]
         return $ f s
@@ -58,7 +60,10 @@ splitWhitespace = span (`elem` " \t")
 stringC :: String -> ParseC ()
 stringC expected = splitConsume split check
   where
+    split :: String -> (String, String)
     split = splitAt $ length expected
+    
+    check :: String -> WriterT Cabal Maybe ()
     check actual = do
         guard $ actual == expected
         tell [Left actual]
@@ -78,7 +83,10 @@ stringC expected = splitConsume split check
 dependencyC :: ParseC ()
 dependencyC = splitConsume split check
   where
+    split :: String -> (String, String)
     split = break (`elem` ",\n")
+    
+    check :: String -> WriterT Cabal Maybe ()
     check s = do
         d <- lift $ simpleParse s
         tell [Right d]
@@ -166,6 +174,7 @@ parseCabal = fromJust . execWriterT . execStateT cabal
         whitespaceC
         go <|> return ()
       where
+        go :: ParseC ()
         go = do
             eolC
             j <- indentC

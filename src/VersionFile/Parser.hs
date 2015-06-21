@@ -97,8 +97,13 @@ versionMap = fmap merge . pkgs
     merge :: [(PackageName, Version)] -> [(PackageName, [Version])]
     merge = map (package &&& versions) . groupBy same_package
     
+    same_package :: (PackageName, Version) -> (PackageName, Version) -> Bool
     same_package = (==) `on` fst
+    
+    package :: [(PackageName, Version)] -> PackageName
     package = fst . head
+    
+    versions :: [(PackageName, Version)] -> [Version]
     versions = map snd
 
 

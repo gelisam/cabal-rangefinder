@@ -73,6 +73,7 @@ build_with_version p v = do
     header :: IO ()
     header = printf "cabal-rangefinder: trying %s %s\n" (display p) (display v)
     
+    cabal' :: Cabal
     cabal' = ?cabal // [(p, thisVersion v)]
 
 -- | Same, but with the type expected by binary_search.

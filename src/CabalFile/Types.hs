@@ -20,6 +20,7 @@ dependencies = rights
 packages :: Cabal -> [PackageName]
 packages = map package . dependencies
   where
+    package :: Dependency -> PackageName
     package (Dependency p _) = p
 
 -- Replace the given dependencies
